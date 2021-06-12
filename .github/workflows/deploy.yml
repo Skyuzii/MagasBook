@@ -19,3 +19,5 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore -c Release
+    - name: Publish
+      run: dotnet publish -c Release -o 'magasbook'
