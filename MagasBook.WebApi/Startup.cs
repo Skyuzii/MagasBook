@@ -54,7 +54,6 @@ namespace MagasBook.WebApi
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseHttpsRedirection();
             app.UseRouting();
             
             app.UseAuthentication();
