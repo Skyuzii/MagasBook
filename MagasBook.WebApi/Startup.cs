@@ -47,7 +47,7 @@ namespace MagasBook.WebApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MagasBook.WebApi v1"));
-            }
+            } 
             
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
