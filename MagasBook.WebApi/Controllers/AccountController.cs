@@ -1,29 +1,39 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using FluentValidation;
+using MagasBook.Application.Common.Dto;
+using MagasBook.Application.Common.Dto.Account;
+using MagasBook.Application.Common.Validators.Account;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using IAuthorizationService = MagasBook.Application.Common.Interfaces.IAuthorizationService;
 
 namespace MagasBook.WebApi.Controllers
 {
-    [ApiController]
-    [Route("/api/[controller]/[action]")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AccountController(IHttpContextAccessor contextAccessor)
+        public AccountController(IAuthorizationService authorizationService)
         {
-            _contextAccessor = contextAccessor;
+            _authorizationService = authorizationService;
         }
         
-        [HttpGet]
-        public IActionResult Status()
+        [HttpPost]
+        public async Task<OperationResultDto> Register(RegisterDto registerDto, [FromServices] RegisterDtoValidator registerDtoValidator)
         {
-            return BadRequest("Ужас");
-        }
+            await registerDtoValidator.ValidateAndThrowAsync(registerDto);
+            await _authorizationService.RegisterAsync(registerDto);
 
-        [HttpGet]
-        public IActionResult Test()
+            return Success("Пользователь успешно создан", StatusCodes.Status201Created);
+        }
+        
+        [HttpPost]
+        public async Task<OperationResultDto<TokenDto>> Login(LoginDto loginDto, [FromServices] LoginDtoValidator loginDtoValidator)
         {
-            return Ok(5);
+            await loginDtoValidator.ValidateAndThrowAsync(loginDto);
+            var tokenDto = await _authorizationService.LoginAsync(loginDto);
+
+            return Success(tokenDto, StatusCodes.Status201Created);
         }
     }
 }
