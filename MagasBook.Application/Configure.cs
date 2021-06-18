@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using MagasBook.Application.Common.Interfaces;
 using MagasBook.Application.Services;
 using MediatR;
@@ -14,7 +15,7 @@ namespace MagasBook.Application
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
             
             services.AddScoped<IAuthorizationService, AuthorizationService>();
 

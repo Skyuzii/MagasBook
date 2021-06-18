@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MagasBook.Application;
 using MagasBook.Application.Common.Dto;
 using MagasBook.Infrastructure;
+using MagasBook.WebApi.Filters;
 using MagasBook.WebApi.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,15 +32,20 @@ namespace MagasBook.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<JwtSettings>(Configuration.GetSection(nameof(JwtSettings)));
-            services.AddControllers();
+            services.AddControllers(options => options.Filters.Add(typeof(ValidatorActionFilter)))
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.SuppressModelStateInvalidFilter = true;
+                    options.SuppressMapClientErrors = true;
+                });
 
             services.AddHttpContextAccessor();
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "MagasBook.WebApi", Version = "v1"});
             });
-            
+
             services.AddApplication();
             services.AddInfrastructure(Configuration);
         }

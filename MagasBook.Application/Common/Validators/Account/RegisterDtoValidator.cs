@@ -9,13 +9,13 @@ namespace MagasBook.Application.Common.Validators.Account
         {
             RuleFor(x => x.UserName)
                 .NotEmpty()
-                .WithMessage("Поле не может быть пустым");
+                .WithMessage("Имя пользователя не может быть пустым");
 
             RuleFor(x => x.Email)
                 .NotEmpty()
-                .WithMessage("Поле не может быть пустым")
+                .WithMessage("Почтовый адрес не может быть пустым")
                 .EmailAddress()
-                .WithMessage("Введите корректный почтовый адрес");
+                .WithMessage("ыВведите корректный почтовый адрес");
 
             RuleFor(x => x.Password)
                 .NotEmpty()
@@ -24,11 +24,11 @@ namespace MagasBook.Application.Common.Validators.Account
                 .WithMessage("Пароль должен быть больше 8 символов")
                 .MaximumLength(30)
                 .WithMessage("Слишком длинный пароль")
-                .NotEqual(x => x.PasswordConfirm)
+                .Equal(x => x.PasswordConfirm)
                 .WithMessage("Пароли не совпадают");
             
             RuleFor(x => x.PasswordConfirm)
-                .NotEqual(x => x.Password)
+                .Equal(x => x.Password)
                 .WithMessage("Пароли не совпадают");
         }
     }
