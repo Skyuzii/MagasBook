@@ -8,15 +8,22 @@
       <PackageReference Include="AutoMapper" Version="10.1.1" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
       <PackageReference Include="FluentValidation" Version="10.2.3" />
+      <PackageReference Include="FluentValidation.AspNetCore" Version="10.2.3" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.2.3" />
       <PackageReference Include="MediatR" Version="9.0.0" />
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup>
       <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
         <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\5.0.0\ref\net5.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MagasBook.Domain\MagasBook.Domain.csproj" />
     </ItemGroup>
 
 </Project>

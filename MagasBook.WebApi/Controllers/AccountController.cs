@@ -1,29 +1,31 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using MagasBook.Application.Common.Dto.Account;
 using Microsoft.AspNetCore.Mvc;
+using MagasBook.Application.Common.Interfaces;
 
 namespace MagasBook.WebApi.Controllers
 {
-    [ApiController]
-    [Route("/api/[controller]/[action]")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AccountController(IHttpContextAccessor contextAccessor)
+        public AccountController(IAuthorizationService authorizationService)
         {
-            _contextAccessor = contextAccessor;
+            _authorizationService = authorizationService;
         }
         
-        [HttpGet]
-        public IActionResult Status()
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            return BadRequest("Ужас");
+            await _authorizationService.RegisterAsync(registerDto);
+            return Ok();
         }
-
-        [HttpGet]
-        public IActionResult Test()
+        
+        [HttpPost]
+        public async Task<ActionResult<TokenDto>> Login(LoginDto loginDto)
         {
-            return Ok(5);
+            var tokenDto = await _authorizationService.LoginAsync(loginDto);
+            return Ok(tokenDto);
         }
     }
 }

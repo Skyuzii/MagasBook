@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MagasBook.Application;
+using MagasBook.Application.Common.Dto;
+using MagasBook.Infrastructure;
+using MagasBook.WebApi.Filters;
+using MagasBook.WebApi.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -27,17 +31,23 @@ namespace MagasBook.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                .AddNewtonsoftJson();
+            services.Configure<JwtSettings>(Configuration.GetSection(nameof(JwtSettings)));
+            services.AddControllers(options => options.Filters.Add(typeof(ValidatorActionFilter)))
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.SuppressModelStateInvalidFilter = true;
+                    options.SuppressMapClientErrors = true;
+                });
 
             services.AddHttpContextAccessor();
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "MagasBook.WebApi", Version = "v1"});
             });
 
             services.AddApplication();
+            services.AddInfrastructure(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -45,7 +55,9 @@ namespace MagasBook.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            } 
+            }
+
+            app.UseMiddleware<ExceptionMiddleware>();
             
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MagasBook.WebApi v1"));
@@ -55,7 +67,7 @@ namespace MagasBook.WebApi
             });
 
             app.UseRouting();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 
