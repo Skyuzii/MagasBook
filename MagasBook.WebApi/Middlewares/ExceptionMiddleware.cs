@@ -99,16 +99,19 @@ namespace MagasBook.WebApi.Middlewares
             await context.Response.WriteAsync(result);
         }
 
-        private OperationResultDto<string> BuildDefaultErrorResult(Exception exception)
+        private BadResponseDto BuildDefaultErrorResult(Exception exception)
         {
-            var error = new OperationResultDto<string>
+            var badResponse = new BadResponseDto
             {
-                Success = false,
-                Message = exception.InnerException?.Message ?? exception.Message,
-                Data = _env.IsDevelopment() ? exception.StackTrace : string.Empty
+                Errors = new List<string> {exception.Message}
             };
 
-            return error;
+            if (_env.IsDevelopment())
+            {
+                badResponse.Errors.Add(exception.StackTrace);
+            }
+            
+            return badResponse;
         }
     }
 

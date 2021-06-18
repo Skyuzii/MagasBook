@@ -9,11 +9,11 @@ namespace MagasBook.Application.Common.Validators.Account
         {
             RuleFor(x => x.UserName)
                 .NotEmpty()
-                .WithMessage("Поле не может быть пустым");
+                .WithMessage("Имя пользователя не может быть пустым");
 
             RuleFor(x => x.Password)
                 .NotEmpty()
-                .WithMessage("Поле не может быть пустым");
+                .WithMessage("Пароль не может быть пустым");
         }
     }
 }

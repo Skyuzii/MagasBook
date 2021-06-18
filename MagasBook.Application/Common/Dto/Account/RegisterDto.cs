@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using FluentValidation.Attributes;
 using MagasBook.Application.Common.Mappings;
-using MagasBook.Application.Common.Validators.Account;
 using MagasBook.Domain.Entities.Account;
 
 namespace MagasBook.Application.Common.Dto.Account
 {
-    [Validator(typeof(RegisterDtoValidator))]
     public class RegisterDto : IMapFrom<ApplicationUser>
     {
         public string UserName { get; set; }
