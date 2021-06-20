@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MagasBook.Application;
-using MagasBook.Application.Common.Dto;
+using MagasBook.Application.Dto;
 using MagasBook.Infrastructure;
 using MagasBook.WebApi.Filters;
 using MagasBook.WebApi.Middlewares;

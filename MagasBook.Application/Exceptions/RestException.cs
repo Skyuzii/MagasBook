@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MagasBook.Application.Common.Exceptions
+namespace MagasBook.Application.Exceptions
 {
     public class RestException : Exception
     {

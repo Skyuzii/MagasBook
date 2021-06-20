@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper;
 
-namespace MagasBook.Application.Common.Mappings
+namespace MagasBook.Application.Mappings
 {
     public class MappingProfile : Profile
     {

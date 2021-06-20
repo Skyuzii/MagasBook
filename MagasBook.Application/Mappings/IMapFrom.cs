@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace MagasBook.Application.Common.Mappings
+namespace MagasBook.Application.Mappings
 {
     public interface IMapFrom<T>
     {

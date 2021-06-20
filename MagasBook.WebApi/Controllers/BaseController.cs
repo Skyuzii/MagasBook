@@ -1,5 +1,4 @@
 ﻿using System;
-using MagasBook.Application.Common.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagasBook.WebApi.Controllers

@@ -1,4 +1,4 @@
-﻿namespace MagasBook.Application.Common.Constants
+﻿namespace MagasBook.Application.Constants
 {
     public static class ClaimTypes
     {

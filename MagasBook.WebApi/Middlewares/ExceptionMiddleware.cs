@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentValidation;
-using MagasBook.Application.Common.Dto;
-using MagasBook.Application.Common.Exceptions;
+using MagasBook.Application.Dto;
+using MagasBook.Application.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;

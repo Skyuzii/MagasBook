@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using MagasBook.Application.Common.Constants;
+using MagasBook.Application.Constants;
 using MagasBook.Domain.Entities.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

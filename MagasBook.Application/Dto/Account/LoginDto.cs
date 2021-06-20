@@ -1,4 +1,4 @@
-﻿namespace MagasBook.Application.Common.Dto.Account
+﻿namespace MagasBook.Application.Dto.Account
 {
     public class LoginDto
     {

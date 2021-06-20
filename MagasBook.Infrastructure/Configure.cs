@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using MagasBook.Application.Common.Dto;
 using MagasBook.Domain.Entities.Account;
 using MagasBook.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

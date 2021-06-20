@@ -9,17 +9,17 @@ using System.Text.Unicode;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration;
-using MagasBook.Application.Common.Constants;
-using MagasBook.Application.Common.Dto;
-using MagasBook.Application.Common.Dto.Account;
-using MagasBook.Application.Common.Exceptions;
-using MagasBook.Application.Common.Interfaces;
+using MagasBook.Application.Constants;
+using MagasBook.Application.Dto;
+using MagasBook.Application.Dto.Account;
+using MagasBook.Application.Exceptions;
+using MagasBook.Application.Interfaces;
 using MagasBook.Domain.Entities.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using ClaimTypes = MagasBook.Application.Common.Constants.ClaimTypes;
+using ClaimTypes = MagasBook.Application.Constants.ClaimTypes;
 
 namespace MagasBook.Application.Services
 {

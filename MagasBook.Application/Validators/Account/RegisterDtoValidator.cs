@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using MagasBook.Application.Common.Dto.Account;
+using MagasBook.Application.Dto.Account;
 
-namespace MagasBook.Application.Common.Validators.Account
+namespace MagasBook.Application.Validators.Account
 {
     public class RegisterDtoValidator : AbstractValidator<RegisterDto>
     {

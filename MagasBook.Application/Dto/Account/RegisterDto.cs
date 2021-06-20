@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using MagasBook.Application.Common.Mappings;
+using MagasBook.Application.Mappings;
 using MagasBook.Domain.Entities.Account;
 
-namespace MagasBook.Application.Common.Dto.Account
+namespace MagasBook.Application.Dto.Account
 {
     public class RegisterDto : IMapFrom<ApplicationUser>
     {

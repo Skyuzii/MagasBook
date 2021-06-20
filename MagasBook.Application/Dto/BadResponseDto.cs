@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace MagasBook.Application.Common.Dto
+namespace MagasBook.Application.Dto
 {
     public class BadResponseDto
     {
