@@ -25,7 +25,7 @@ namespace MagasBook.WebApi.Controllers
         public async Task<ActionResult<TokenDto>> Login(LoginDto loginDto)
         {
             var tokenDto = await _authorizationService.LoginAsync(loginDto);
-            return Ok(tokenDto);
+            return tokenDto;
         }
     }
 }

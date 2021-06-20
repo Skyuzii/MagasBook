@@ -1,4 +1,4 @@
-﻿namespace MagasBook.Application.Dto
+﻿namespace MagasBook.Application.Dto.Account
 {
     public class JwtSettings
     {
