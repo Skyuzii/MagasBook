@@ -74,16 +74,10 @@ namespace MagasBook.WebApi.Middlewares
             await context.Response.WriteAsync(result);
         }
         
-        private async Task HandleNotFoundException(HttpContext context, Exception exception)
+        private Task HandleNotFoundException(HttpContext context, Exception exception)
         {
-            var error = BuildDefaultErrorResult(exception);
-			
-            var result = JsonConvert.SerializeObject(error);
-
             context.Response.StatusCode = StatusCodes.Status404NotFound;
-            context.Response.ContentType = "application/json";
-			
-            await context.Response.WriteAsync(result);
+            return Task.CompletedTask;
         }
 
         private async Task HandleRestException(HttpContext context, Exception exception)

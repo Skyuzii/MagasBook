@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MagasBook.Application;
 using MagasBook.Application.Dto;
+using MagasBook.Application.Dto.Account;
 using MagasBook.Infrastructure;
 using MagasBook.WebApi.Filters;
 using MagasBook.WebApi.Middlewares;

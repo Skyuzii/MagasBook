@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using MagasBook.Application.Interfaces;
 using MagasBook.Domain.Entities.Account;
 using MagasBook.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,10 +16,12 @@ namespace MagasBook.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), sqlServerOptions =>
                     sqlServerOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
