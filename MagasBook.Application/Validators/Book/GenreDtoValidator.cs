@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MagasBook.Application.Dto.Genre;
+using MagasBook.Application.Dto.Book;
 
 namespace MagasBook.Application.Validators.Book
 {

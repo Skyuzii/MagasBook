@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using MagasBook.Application.Dto.Genre;
+using MagasBook.Application.Dto.Book;
 using MagasBook.Application.Exceptions;
 using MagasBook.Application.Interfaces;
 using MagasBook.Domain.Entities.Book;
@@ -18,6 +18,18 @@ namespace MagasBook.Application.Services
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id == id);
+            if (genre == null)
+            {
+                throw new NotFoundException();
+            }
+
+            _context.Genres.Remove(genre);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<GenreDto> GetAsync(int id)
