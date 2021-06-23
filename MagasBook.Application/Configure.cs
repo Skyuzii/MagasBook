@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using MagasBook.Application.Interfaces;
 using MagasBook.Application.Services;
