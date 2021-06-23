@@ -23,14 +23,14 @@ using ClaimTypes = MagasBook.Application.Constants.ClaimTypes;
 
 namespace MagasBook.Application.Services
 {
-    public class AuthorizationService : IAuthorizationService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly IMapper _mapper;
         private readonly JwtSettings _jwtSettings;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AuthorizationService(
+        public AuthenticationService(
             IMapper mapper,
             IOptions<JwtSettings> jwtSettings,
             UserManager<ApplicationUser> userManager,

@@ -18,7 +18,7 @@ namespace MagasBook.Application
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
             
             services.AddScoped<IGenreService, GenreService>();
-            services.AddScoped<IAuthorizationService, AuthorizationService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             return services;
         }
