@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MagasBook.Application.Mappings;
 
-namespace MagasBook.Application.Dto.Genre
+namespace MagasBook.Application.Dto.Book
 {
     public class GenreDto : IMapFrom<Domain.Entities.Book.Genre>
     {
