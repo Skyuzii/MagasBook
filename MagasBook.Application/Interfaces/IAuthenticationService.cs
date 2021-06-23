@@ -3,7 +3,7 @@ using MagasBook.Application.Dto.Account;
 
 namespace MagasBook.Application.Interfaces
 {
-    public interface IAuthorizationService
+    public interface IAuthenticationService
     {
         Task RegisterAsync(RegisterDto registerDto);
 

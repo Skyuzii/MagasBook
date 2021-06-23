@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MagasBook.Application.Dto.Genre;
 using MagasBook.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagasBook.WebApi.Controllers
@@ -18,11 +19,6 @@ namespace MagasBook.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GenreDto>> Get(int id)
         {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-
             var genreDto = await _genreService.GetAsync(id);
             return genreDto;
         }
@@ -35,6 +31,7 @@ namespace MagasBook.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create([FromBody] GenreDto genreDto)
         {
             var genreCreated = await _genreService.CreateAsync(genreDto);

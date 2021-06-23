@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Unicode;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.Configuration;
 using MagasBook.Application.Constants;
-using MagasBook.Application.Dto;
 using MagasBook.Application.Dto.Account;
 using MagasBook.Application.Exceptions;
 using MagasBook.Application.Interfaces;
@@ -19,18 +15,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using ClaimTypes = MagasBook.Application.Constants.ClaimTypes;
 
 namespace MagasBook.Application.Services
 {
-    public class AuthorizationService : IAuthorizationService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly IMapper _mapper;
         private readonly JwtSettings _jwtSettings;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AuthorizationService(
+        public AuthenticationService(
             IMapper mapper,
             IOptions<JwtSettings> jwtSettings,
             UserManager<ApplicationUser> userManager,
@@ -47,13 +42,13 @@ namespace MagasBook.Application.Services
             var userExist = await _userManager.FindByNameAsync(registerDto.UserName) != null;
             if (userExist)
             {
-                throw new RestException("Пользователь уже существует", StatusCodes.Status500InternalServerError);
+                throw new RestException("Пользователь уже существует", StatusCodes.Status409Conflict);
             }
 
             userExist = await _userManager.FindByEmailAsync(registerDto.Email) != null;
             if (userExist)
             {
-                throw new RestException("Пользователь уже существует", StatusCodes.Status500InternalServerError);
+                throw new RestException("Пользователь уже существует", StatusCodes.Status409Conflict);
             }
             
             var applicationUser = _mapper.Map<ApplicationUser>(registerDto);
@@ -83,15 +78,15 @@ namespace MagasBook.Application.Services
             var expires = DateTime.Now.AddMonths(1);
             var token = await GenerateJwtTokenAsync(user, expires);
             
-            return new TokenDto {Token = token, Expires = expires};
+            return new TokenDto { Token = token, Expires = expires };
         }
 
         private async Task<string> GenerateJwtTokenAsync(ApplicationUser user, DateTime expires)
         {
-            var claims = new List<Claim>()
+            var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Id, user.Id),
-                new Claim(ClaimTypes.UserName, user.UserName)
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName)
             };
 
             claims.AddRange((await _userManager.GetRolesAsync(user)).Select(userRole => new Claim(ClaimTypes.Role, userRole)));

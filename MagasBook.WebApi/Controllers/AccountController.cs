@@ -7,24 +7,24 @@ namespace MagasBook.WebApi.Controllers
 {
     public class AccountController : BaseController
     {
-        private readonly IAuthorizationService _authorizationService;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AccountController(IAuthorizationService authorizationService)
+        public AccountController(IAuthenticationService authenticationService)
         {
-            _authorizationService = authorizationService;
+            _authenticationService = authenticationService;
         }
         
         [HttpPost]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            await _authorizationService.RegisterAsync(registerDto);
+            await _authenticationService.RegisterAsync(registerDto);
             return Ok();
         }
         
         [HttpPost]
         public async Task<ActionResult<TokenDto>> Login(LoginDto loginDto)
         {
-            var tokenDto = await _authorizationService.LoginAsync(loginDto);
+            var tokenDto = await _authenticationService.LoginAsync(loginDto);
             return tokenDto;
         }
     }
