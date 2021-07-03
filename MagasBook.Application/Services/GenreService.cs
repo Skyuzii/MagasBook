@@ -65,9 +65,9 @@ namespace MagasBook.Application.Services
         public async Task<List<GenreDto>> GetAllAsync()
         {
             var genres = await _context.Genres.ToListAsync();
-            var genresDto = _mapper.Map<List<GenreDto>>(genres);
+            var genreDtos = _mapper.Map<List<GenreDto>>(genres);
 
-            return genresDto;
+            return genreDtos;
         }
     }
 }

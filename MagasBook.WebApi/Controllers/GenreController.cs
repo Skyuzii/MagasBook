@@ -37,5 +37,13 @@ namespace MagasBook.WebApi.Controllers
             var genreCreated = await _genreService.CreateAsync(genreDto);
             return CreatedAtAction(nameof(Get), new {id = genreDto.Id}, genreCreated);
         }
+        
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _genreService.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }
