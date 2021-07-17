@@ -3,33 +3,32 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MagasBook.Application.Dto.Book;
 using MagasBook.Application.Exceptions;
-using MagasBook.Application.Interfaces;
+using MagasBook.Application.Interfaces.Repositories;
+using MagasBook.Application.Interfaces.Services;
 using MagasBook.Domain.Entities.Book;
-using Microsoft.EntityFrameworkCore;
 
 namespace MagasBook.Application.Services
 {
     public class AuthorService : IAuthorService
     {
         private readonly IMapper _mapper;
-        private readonly IApplicationDbContext _context;
+        private readonly IRepository<Author> _authorRepository;
 
-        public AuthorService(IApplicationDbContext context, IMapper mapper)
+        public AuthorService(IRepository<Author> authorRepository, IMapper mapper)
         {
-            _context = context;
             _mapper = mapper;
+            _authorRepository = authorRepository;
         }
 
         public async Task DeleteAsync(int id)
         {
-            var author = await _context.Authors.FirstOrDefaultAsync(x => x.Id == id);
+            var author = await _authorRepository.GetByIdAsync(id);
             if (author == null)
             {
                 throw new NotFoundException();
             }
 
-            _context.Authors.Remove(author);
-            await _context.SaveChangesAsync();
+            await _authorRepository.DeleteAsync(author);
         }
 
         public async Task<AuthorDto> GetAsync(int id)
@@ -39,7 +38,7 @@ namespace MagasBook.Application.Services
                 throw new NotFoundException();
             }
 
-            var author = await _context.Authors.FirstOrDefaultAsync(x => x.Id == id);
+            var author = await _authorRepository.GetByIdAsync(id);
             if (author == null)
             {
                 throw new NotFoundException();
@@ -54,8 +53,7 @@ namespace MagasBook.Application.Services
         {
             var author = _mapper.Map<Author>(authorDto);
 
-            await _context.Authors.AddAsync(author);
-            await _context.SaveChangesAsync();
+            await _authorRepository.AddAsync(author);
 
             authorDto.Id = author.Id;
             
@@ -64,19 +62,19 @@ namespace MagasBook.Application.Services
 
         public async Task EditAsync(AuthorDto authorDto)
         {
-            var author = await _context.Authors.FirstOrDefaultAsync(x => x.Id == authorDto.Id);
+            var author = await _authorRepository.GetByIdAsync(authorDto.Id);
             if (author == null)
             {
                 throw new NotFoundException();
             }
 
             author = _mapper.Map<Author>(authorDto);
-            await _context.SaveChangesAsync();
+            await _authorRepository.UpdateAsync(author);
         }
 
         public async Task<List<AuthorDto>> GetAllAsync()
         {
-            var authors = await _context.Authors.ToListAsync();
+            var authors = await _authorRepository.GetAllAsync();
             var authorsDto = _mapper.Map<List<AuthorDto>>(authors);
 
             return authorsDto;

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MagasBook.Application.Dto.Account;
 
-namespace MagasBook.Application.Interfaces
+namespace MagasBook.Application.Interfaces.Services
 {
     public interface IAuthenticationService
     {

@@ -1,13 +1,14 @@
 ﻿using System.Text;
-using MagasBook.Application.Interfaces;
+using MagasBook.Application.Interfaces.Repositories;
 using MagasBook.Domain.Entities.Account;
 using MagasBook.Infrastructure.Persistence;
+using MagasBook.Infrastructure.Persistence.DbContexts;
+using MagasBook.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace MagasBook.Infrastructure
@@ -16,11 +17,10 @@ namespace MagasBook.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), sqlServerOptions =>
                     sqlServerOptions.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
             
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

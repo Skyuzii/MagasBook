@@ -1,17 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MagasBook.Domain.Entities.Account;
 using MagasBook.Infrastructure.Persistence;
+using MagasBook.Infrastructure.Persistence.DbContexts;
+using MagasBook.Infrastructure.Persistence.Seeds;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace MagasBook.WebApi
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MagasBook.Infrastructure.Migrations
+namespace MagasBook.Infrastructure.Persistence.Migrations
 {
     public partial class AddedNewTablesBooksAndAuthorsAndGenres : Migration
     {

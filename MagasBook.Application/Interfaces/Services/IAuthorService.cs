@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MagasBook.Application.Dto.Book;
 
-namespace MagasBook.Application.Interfaces
+namespace MagasBook.Application.Interfaces.Services
 {
     public interface IAuthorService
     {
