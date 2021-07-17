@@ -1,135 +1,163 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using MagasBook.Application.Dto.Book;
 using MagasBook.Application.Exceptions;
-using MagasBook.Application.Interfaces;
+using MagasBook.Application.Interfaces.Repositories;
 using MagasBook.Application.Mappings;
 using MagasBook.Application.Services;
 using MagasBook.Domain.Entities.Book;
-using MagasBook.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Xunit;
 
 namespace MagasBook.Application.Tests
 {
     public class GenreServiceTests
     {
-        private readonly IMapper _mapper;
         private readonly GenreService _genreService;
-        private readonly IApplicationDbContext _context;
+        private readonly Fixture _fixture = new Fixture();
+        private readonly Mock<IRepository<Genre>> _genreRepositoryMock = new Mock<IRepository<Genre>>();
         
         public GenreServiceTests()
         {
-            var services = new ServiceCollection();
-
-            services.AddAutoMapper(typeof(MappingProfile).Assembly);
-            services.AddDbContext<ApplicationDbContext>(x => x.UseInMemoryDatabase(nameof(GenreService)));
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
-
-            var provider = services.BuildServiceProvider();
-            
-            _mapper = provider.GetService<IMapper>();
-            _context = provider.GetService<IApplicationDbContext>();
-            
-            _genreService = new GenreService(_context, _mapper);
-
-            Seed();
+            var mapperConfiguration = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
+            _genreService = new GenreService(_genreRepositoryMock.Object, mapperConfiguration.CreateMapper());
         }
 
         [Fact]
         public async Task Create_ShouldCreateGenre()
         {
             // arrange
-            var fixture = new Fixture();
-            var genreDto = fixture.Build<GenreDto>()
-                .With(x => x.Name, "Манга")
+            var genreId = _fixture.Create<int>();
+            var genreName = "Манга";
+            var genreDto = _fixture.Build<GenreDto>()
+                .With(x => x.Name, genreName)
                 .Create();
+
+            var genre = _fixture.Build<Genre>()
+                .With(x => x.Id, genreId)
+                .With(x => x.Name, genreName)
+                .Without(x => x.Books)
+                .Create();
+
+            _genreRepositoryMock
+                .Setup(x => x.AddAsync(It.IsAny<Genre>()))
+                .ReturnsAsync(genre);
             
             // act
-            var result = await _genreService.CreateAsync(genreDto);
+            var resultGenreDto = await _genreService.CreateAsync(genreDto);
 
             // assert
-            Assert.True(result.Id > 0);
+            _genreRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Genre>()), Times.Once);
+            Assert.Equal(resultGenreDto.Id, genre.Id);
+            Assert.Equal(resultGenreDto.Name, genre.Name);
         }
 
         [Fact]
         public async Task Get_ShouldReturnGenre()
         {
             // arrange 
-            var genreId = 1;
+            var genreId = _fixture.Create<int>();
+            var genreName = "Манга";
+            var genre = _fixture.Build<Genre>()
+                .With(x => x.Id, genreId)
+                .With(x => x.Name, genreName)
+                .Without(x => x.Books)
+                .Create();
+            
+            _genreRepositoryMock
+                .Setup(x => x.GetByIdAsync(genreId))
+                .ReturnsAsync(genre);
             
             // act
-            var genre = await _genreService.GetAsync(genreId);
+            var genreDto = await _genreService.GetAsync(genreId);
 
             // assert
-            Assert.NotNull(genre);
-            Assert.IsType<GenreDto>(genre);
+            _genreRepositoryMock.Verify(x => x.GetByIdAsync(genreId), Times.Once);
+            Assert.NotNull(genreDto);
+            Assert.Equal(genreId, genreDto.Id);
+            Assert.Equal(genreName, genreDto.Name);
         }
 
         [Fact]
         public async Task Get_GenreNotFound_ShouldThrowNotFoundException()
         {
             // arrange
-            var genreId = 0;
+            var genreId = _fixture.Create<int>();
+
+            _genreRepositoryMock
+                .Setup(x => x.GetByIdAsync(genreId))
+                .ReturnsAsync(() => null);
 
             // act - assert
             await Assert.ThrowsAsync<NotFoundException>(() => _genreService.GetAsync(genreId));
+            _genreRepositoryMock.Verify(x => x.GetByIdAsync(genreId), Times.Once);
         }
 
         [Fact]
         public async Task GetAll_ShouldReturnGenreDtos()
         {
             // arrange
+
+            var genreCount = 5;
+            var genres = _fixture.Build<Genre>()
+                .Without(x => x.Books)
+                .CreateMany(genreCount)
+                .ToList();
+
+            _genreRepositoryMock
+                .Setup(x => x.GetAllAsync())
+                .ReturnsAsync(genres);
             
             // act 
             var genreDtos = await _genreService.GetAllAsync();
 
             // assert
-            Assert.IsType<List<GenreDto>>(genreDtos);
-            Assert.True(genreDtos.Count > 0);
+            _genreRepositoryMock.Verify(x => x.GetAllAsync(), Times.Once);
+            Assert.NotNull(genreDtos);
+            Assert.True(genreDtos.Count == genreCount);
         }
 
         [Fact]
         public async Task Delete_ShouldDeleteGenre()
         {
             // arrange
-            var genreId = 1;
+            var genreId = _fixture.Create<int>();
+            var genre = _fixture.Build<Genre>()
+                .With(x => x.Id, genreId)
+                .Without(x => x.Books)
+                .Create();
+
+            _genreRepositoryMock
+                .Setup(x => x.GetByIdAsync(genreId))
+                .ReturnsAsync(genre);
+            
+            _genreRepositoryMock
+                .Setup(x => x.DeleteAsync(genre))
+                .Returns(Task.CompletedTask);
 
             // act
             await _genreService.DeleteAsync(genreId);
 
             // assert
-            Assert.False(_context.Genres.Any(x => x.Id == genreId));
+            _genreRepositoryMock.Verify(x => x.DeleteAsync(genre), Times.Once);
+            _genreRepositoryMock.Verify(x => x.GetByIdAsync(genreId), Times.Once);
         }
 
         [Fact]
         public async Task Delete_GenreNotFound_ShouldThrowNotFoundException()
         {
-            // arrange 
-            var genreId = 0;
+            // arrange
+            var genreId = _fixture.Create<int>();
+
+            _genreRepositoryMock
+                .Setup(x => x.GetByIdAsync(genreId))
+                .ReturnsAsync(() => null);
 
             // act - assert
             await Assert.ThrowsAsync<NotFoundException>(() => _genreService.DeleteAsync(genreId));
-        }
-
-        private void Seed()
-        {
-            if (_context.Genres.Any()) return;
-
-            var genres = new List<Genre>
-            {
-                new Genre {Name = "Фэнтези"},
-                new Genre {Name = "Фантастика"},
-                new Genre {Name = "Приключение"},
-                new Genre {Name = "Боевик"}
-            };
-
-            _context.Genres.AddRange(genres);
-            _context.SaveChanges();
+            _genreRepositoryMock.Verify(x => x.GetByIdAsync(genreId), Times.Once);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MagasBook.Domain.Entities.Book
 {
     [Table(nameof(Book))]
-    public class Book
+    public class Book : IBaseDomain
     {
         public int Id { get; set; }
 

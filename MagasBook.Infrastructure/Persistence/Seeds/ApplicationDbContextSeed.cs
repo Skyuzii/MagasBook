@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using MagasBook.Application.Constants;
 using MagasBook.Domain.Entities.Account;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
-namespace MagasBook.Infrastructure.Persistence
+namespace MagasBook.Infrastructure.Persistence.Seeds
 {
     public static class ApplicationDbContextSeed
     {

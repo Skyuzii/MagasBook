@@ -9,7 +9,7 @@ using AutoMapper;
 using MagasBook.Application.Constants;
 using MagasBook.Application.Dto.Account;
 using MagasBook.Application.Exceptions;
-using MagasBook.Application.Interfaces;
+using MagasBook.Application.Interfaces.Services;
 using MagasBook.Domain.Entities.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

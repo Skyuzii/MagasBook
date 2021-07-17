@@ -1,12 +1,11 @@
-﻿using MagasBook.Application.Interfaces;
-using MagasBook.Domain.Entities.Account;
+﻿using MagasBook.Domain.Entities.Account;
 using MagasBook.Domain.Entities.Book;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace MagasBook.Infrastructure.Persistence
+namespace MagasBook.Infrastructure.Persistence.DbContexts
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
