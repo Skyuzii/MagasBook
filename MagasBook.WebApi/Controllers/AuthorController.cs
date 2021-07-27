@@ -4,21 +4,25 @@ using MagasBook.Application.Dto.Book;
 using MagasBook.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace MagasBook.WebApi.Controllers
 {
     public class AuthorController : BaseController
     {
         private readonly IAuthorService _authorService;
+        private readonly ILogger<AuthorController> _logger;
 
-        public AuthorController(IAuthorService authorService)
+        public AuthorController(IAuthorService authorService, ILogger<AuthorController> logger)
         {
             _authorService = authorService;
+            _logger = logger;
         }
         
         [HttpGet("{id}")]
         public async Task<ActionResult<AuthorDto>> Get(int id)
         {
+            _logger.LogWarning("TEST GET");
             var genreDto = await _authorService.GetAsync(id);
             return genreDto;
         }
@@ -26,6 +30,7 @@ namespace MagasBook.WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<AuthorDto>>> GetAll()
         {
+            _logger.LogInformation("TEST GETALL");
             var genres = await _authorService.GetAllAsync();
             return genres;
         }
@@ -55,6 +60,7 @@ namespace MagasBook.WebApi.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
+            _logger.LogCritical("TEST DELETE");
             await _authorService.DeleteAsync(id);
             return NoContent();
         }
