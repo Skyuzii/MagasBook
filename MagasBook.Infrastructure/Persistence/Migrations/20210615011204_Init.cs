@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MagasBook.Infrastructure.Migrations
+namespace MagasBook.Infrastructure.Persistence.Migrations
 {
     public partial class Init : Migration
     {

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
-using MagasBook.Application.Interfaces;
+using MagasBook.Application.Interfaces.Services;
 using MagasBook.Application.Services;
 using MediatR;
 

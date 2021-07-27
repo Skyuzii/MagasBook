@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MagasBook.Application.Dto.Account;
-using MagasBook.Application.Interfaces;
+using MagasBook.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagasBook.WebApi.Controllers
